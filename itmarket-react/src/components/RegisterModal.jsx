@@ -17,30 +17,10 @@ export default function RegisterModal({
     e.preventDefault();
     if (name && email && password) {
       onShowLoader(1200);
-
-      // Foydalanuvchi ma'lumotlarini saqlash
       const userData = { name, email };
-      localStorage.setItem('itmarket_user', JSON.stringify(userData));
-
-      // Bonus va promokodlar
-      if (!localStorage.getItem('itmarket_bonus')) {
-        localStorage.setItem('itmarket_bonus', '1500');
-      }
-      if (!localStorage.getItem('itmarket_promos')) {
-        localStorage.setItem('itmarket_promos', JSON.stringify(['WELCOME10', 'SUMMER20']));
-      }
-      if (!localStorage.getItem('itmarket_orders')) {
-        localStorage.setItem(
-          'itmarket_orders',
-          JSON.stringify([
-            { id: 1, date: '2026-06-20', total: 18990000, status: 'Yetkazilgan' },
-          ])
-        );
-      }
-
       setSuccess(true);
       onToast("Ro'yxatdan o'tish muvaffaqiyatli!", "success");
-      onRegisterSuccess(); // Bu yerda App dagi isRegistered true bo'ladi va localStorage ga yoziladi
+      onRegisterSuccess(userData);
     } else {
       onToast("Iltimos, barcha maydonlarni to'ldiring", "error");
     }

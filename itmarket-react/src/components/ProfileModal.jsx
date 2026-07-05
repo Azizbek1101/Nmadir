@@ -1,35 +1,13 @@
-import { useState, useEffect } from 'react';
 import { products } from '../data/products';
 
-export default function ProfileModal({ isOpen, onClose, onLogout }) {
-  const [user, setUser] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
-  const [promos, setPromos] = useState([]);
-  const [bonus, setBonus] = useState(0);
+export default function ProfileModal({ isOpen, onClose, onLogout, user, cart }) {
+  if (!isOpen) return null;
 
-  useEffect(() => {
-    if (isOpen) {
-      const userData = localStorage.getItem('itmarket_user');
-      setUser(userData ? JSON.parse(userData) : null);
-
-      const cartData = localStorage.getItem('itmarket_cart');
-      setCartItems(cartData ? JSON.parse(cartData) : []);
-
-      const promosData = localStorage.getItem('itmarket_promos');
-      setPromos(promosData ? JSON.parse(promosData) : []);
-
-      const bonusData = localStorage.getItem('itmarket_bonus');
-      setBonus(bonusData ? parseInt(bonusData, 10) : 0);
-    }
-  }, [isOpen]);
-
-  const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
-  const totalPrice = cartItems.reduce((sum, item) => {
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalPrice = cart.reduce((sum, item) => {
     const product = products.find(p => p.id === item.id);
     return sum + (product ? product.price * item.qty : 0);
   }, 0);
-
-  if (!isOpen) return null;
 
   return (
     <div
@@ -93,27 +71,14 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
               <p style={{ fontSize: 14, opacity: 0.6, marginBottom: 2 }}>
                 <i className="fas fa-ticket-alt" style={{ marginRight: 6 }}></i> Promokodlar
               </p>
-              {promos.length > 0 ? (
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {promos.map((code, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        background: 'var(--input-bg)',
-                        padding: '4px 12px',
-                        borderRadius: 60,
-                        fontSize: 14,
-                        fontWeight: 600,
-                        border: '1px solid var(--border)',
-                      }}
-                    >
-                      {code}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p style={{ opacity: 0.5 }}>Promokodlar mavjud emas</p>
-              )}
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <span style={{ background: 'var(--input-bg)', padding: '4px 12px', borderRadius: 60, fontSize: 14, fontWeight: 600, border: '1px solid var(--border)' }}>
+                  WELCOME10
+                </span>
+                <span style={{ background: 'var(--input-bg)', padding: '4px 12px', borderRadius: 60, fontSize: 14, fontWeight: 600, border: '1px solid var(--border)' }}>
+                  SUMMER20
+                </span>
+              </div>
             </div>
 
             <div style={{ marginBottom: 24 }}>
@@ -121,7 +86,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                 <i className="fas fa-coins" style={{ marginRight: 6 }}></i> Bonus ballari
               </p>
               <p style={{ fontSize: 18, fontWeight: 600, color: 'var(--accent)' }}>
-                {bonus} ball
+                1500 ball
               </p>
             </div>
 

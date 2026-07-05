@@ -29,7 +29,7 @@ function App() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
-  // 🔥 Faqat state da saqlanadi, localStorage ishlatilmaydi
+  // Ro'yxatdan o'tish holati (faqat state)
   const [isRegistered, setIsRegistered] = useState(false);
   const [user, setUser] = useState(null);
 
