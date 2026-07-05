@@ -1,0 +1,4 @@
+[build]
+  base = "Nmadir"          # agar loyiha shu papkada bo'lsa, aks holda olib tashlang
+  command = "npm run build"
+  publish = "Nmadir/dist"  # yoki faqat "dist" agar base bo'sh bo'lsa
