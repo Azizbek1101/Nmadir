@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import CategoryBar from './components/CategoryBar';
 import ProductGrid from './components/ProductGrid';
 import Cart from './components/Cart';
 import RegisterModal from './components/RegisterModal';
+import ProfileModal from './components/ProfileModal';
 import Toast from './components/Toast';
 import Loader from './components/Loader';
+import ProductDetail from './components/ProductDetail';
 
 function App() {
   const [category, setCategory] = useState('all');
@@ -21,8 +23,15 @@ function App() {
   });
   const [cartOpen, setCartOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [toast, setToast] = useState({ message: '', type: '' });
   const [loaderVisible, setLoaderVisible] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+
+  // 🔥 Faqat state da saqlanadi, localStorage ishlatilmaydi
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [user, setUser] = useState(null);
 
   const showToast = (msg, type = 'info') => {
     setToast({ message: msg, type });
@@ -46,6 +55,53 @@ function App() {
     showToast(inFav ? "Sevimlilardan olib tashlandi" : "Sevimlilarga qo'shildi", "info");
   };
 
+  const openDetail = (id) => {
+    setSelectedProductId(id);
+    setDetailOpen(true);
+  };
+
+  const closeDetail = () => {
+    setDetailOpen(false);
+    setSelectedProductId(null);
+  };
+
+  const addToCartFromDetail = (id) => {
+    const existing = cart.find(item => item.id === id);
+    if (existing) {
+      setCart(prev => {
+        const newCart = prev.map(item =>
+          item.id === id ? { ...item, qty: item.qty + 1 } : item
+        );
+        localStorage.setItem('itmarket_cart', JSON.stringify(newCart));
+        return newCart;
+      });
+    } else {
+      setCart(prev => {
+        const newCart = [...prev, { id, qty: 1 }];
+        localStorage.setItem('itmarket_cart', JSON.stringify(newCart));
+        return newCart;
+      });
+    }
+    showToast("Savatga qo'shildi", "success");
+  };
+
+  const handleRegisterSuccess = (userData) => {
+    setIsRegistered(true);
+    setUser(userData);
+    showToast("Ro'yxatdan o'tish muvaffaqiyatli!", "success");
+  };
+
+  const handleProfileClick = () => {
+    setProfileOpen(true);
+  };
+
+  const handleLogout = () => {
+    setIsRegistered(false);
+    setUser(null);
+    showToast("Chiqdingiz", "info");
+    setProfileOpen(false);
+  };
+
   return (
     <ThemeProvider>
       <Header
@@ -54,6 +110,8 @@ function App() {
         cartCount={cartCount}
         onCartOpen={() => setCartOpen(true)}
         onRegisterOpen={() => setRegisterOpen(true)}
+        isRegistered={isRegistered}
+        onProfileClick={handleProfileClick}
       />
       <div className="container">
         <CategoryBar
@@ -85,6 +143,7 @@ function App() {
             }
           }}
           onToggleFavourite={toggleFavourite}
+          onOpenDetail={openDetail}
         />
       </div>
 
@@ -102,6 +161,23 @@ function App() {
         onClose={() => setRegisterOpen(false)}
         onToast={showToast}
         onShowLoader={showLoader}
+        onRegisterSuccess={handleRegisterSuccess}
+      />
+
+      <ProfileModal
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        onLogout={handleLogout}
+        user={user}
+        cart={cart}
+      />
+
+      <ProductDetail
+        isOpen={detailOpen}
+        onClose={closeDetail}
+        productId={selectedProductId}
+        onAddToCart={addToCartFromDetail}
+        onToast={showToast}
       />
 
       {toast.message && (

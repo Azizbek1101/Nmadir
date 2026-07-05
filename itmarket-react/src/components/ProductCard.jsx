@@ -1,19 +1,32 @@
 import { useState } from 'react';
 
-export default function ProductCard({ product, inCart, inFavourite, onToggleCart, onToggleFavourite }) {
+export default function ProductCard({ product, inCart, inFavourite, onToggleCart, onToggleFavourite, onOpenDetail }) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  const handleCardClick = () => {
+    onOpenDetail(product.id);
+  };
+
+  const handleButtonClick = (e, callback) => {
+    e.stopPropagation();
+    callback(product.id);
+  };
+
   return (
-    <div style={{
-      background: 'var(--card-bg)',
-      borderRadius: 'var(--radius)',
-      overflow: 'hidden',
-      boxShadow: 'var(--card-shadow)',
-      border: '1px solid var(--border)',
-      transition: '0.3s',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
+    <div
+      onClick={handleCardClick}
+      style={{
+        background: 'var(--card-bg)',
+        borderRadius: 'var(--radius)',
+        overflow: 'hidden',
+        boxShadow: 'var(--card-shadow)',
+        border: '1px solid var(--border)',
+        transition: '0.3s',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: 'pointer'
+      }}
+    >
       <div style={{
         width: '100%',
         aspectRatio: '1 / 1',
@@ -59,7 +72,7 @@ export default function ProductCard({ product, inCart, inFavourite, onToggleCart
         </div>
         <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
           <button
-            onClick={() => onToggleCart(product.id)}
+            onClick={(e) => handleButtonClick(e, onToggleCart)}
             style={{
               flex: 1,
               padding: '10px 0',
@@ -82,14 +95,14 @@ export default function ProductCard({ product, inCart, inFavourite, onToggleCart
             {inCart ? 'Savatda' : "Qo'shish"}
           </button>
           <button
-            onClick={() => onToggleFavourite(product.id)}
+            onClick={(e) => handleButtonClick(e, onToggleFavourite)}
             style={{
               flex: '0 0 44px',
               height: 44,
               borderRadius: 60,
               border: 'none',
               background: inFavourite ? 'rgba(56,189,248,0.2)' : 'transparent',
-              color: '#38BDF8', 
+              color: '#38BDF8',
               cursor: 'pointer',
               transition: '0.3s',
               display: 'flex',

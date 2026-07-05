@@ -24,7 +24,7 @@ export default function Loader({ visible }) {
           height: 80,
           objectFit: 'contain',
           background: 'transparent',
-          mixBlendMode: 'multiply'   // ← bu qator oq fonni yo‘q qiladi
+          mixBlendMode: 'multiply'   
         }}
       />
       <style>{`

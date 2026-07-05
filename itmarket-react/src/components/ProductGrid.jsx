@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { products } from '../data/products';
 import ProductCard from './ProductCard';
 
-export default function ProductGrid({ category, search, cart, favourites, onToggleCart, onToggleFavourite }) {
+export default function ProductGrid({ category, search, cart, favourites, onToggleCart, onToggleFavourite, onOpenDetail }) {
   const [loading, setLoading] = useState(true);
   const [filtered, setFiltered] = useState([]);
 
@@ -67,6 +67,7 @@ export default function ProductGrid({ category, search, cart, favourites, onTogg
           inFavourite={favourites.includes(p.id)}
           onToggleCart={onToggleCart}
           onToggleFavourite={onToggleFavourite}
+          onOpenDetail={onOpenDetail}
         />
       ))}
     </div>
