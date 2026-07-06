@@ -41,9 +41,31 @@ export default function ProfileModal({ isOpen, onClose, onLogout, user, cart }) 
           overflowY: 'auto',
         }}
       >
-        <h2 style={{ fontSize: 24, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <i className="fas fa-user" style={{ color: 'var(--accent)' }}></i> Profil
-        </h2>
+        {/* Sarlavha va X tugmasi */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10, margin: 0 }}>
+            <i className="fas fa-user" style={{ color: 'var(--accent)' }}></i> Profil
+          </h2>
+          <button
+            onClick={onClose}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 60,
+              background: 'var(--input-bg)',
+              border: 'none',
+              fontSize: 20,
+              color: 'var(--text)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: '0.3s',
+            }}
+          >
+            <i className="fas fa-times"></i>
+          </button>
+        </div>
 
         {user ? (
           <>
