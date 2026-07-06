@@ -20,7 +20,7 @@ export default function RegisterModal({
       const userData = { name, email };
       setSuccess(true);
       onToast("Ro'yxatdan o'tish muvaffaqiyatli!", "success");
-      onRegisterSuccess(userData);
+      onRegisterSuccess(userData); // App ga yuboramiz
     } else {
       onToast("Iltimos, barcha maydonlarni to'ldiring", "error");
     }
