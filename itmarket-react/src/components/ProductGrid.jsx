@@ -13,7 +13,7 @@ export default function ProductGrid({
 }) {
   const [loading, setLoading] = useState(true);
   const [filtered, setFiltered] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(10); // har safar 10 ta qo'shiladi
+  const [visibleCount, setVisibleCount] = useState(10);
   const pageSize = 10;
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function ProductGrid({
         );
       }
       setFiltered(result);
-      setVisibleCount(pageSize); // filter o'zgarganda yana 10 ta qilib qo'yamiz
+      setVisibleCount(pageSize);
       setLoading(false);
     }, 600);
     return () => clearTimeout(timer);
@@ -65,9 +65,9 @@ export default function ProductGrid({
 
   if (filtered.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 80px) 0', opacity: 0.6 }}>
-        <i className="fas fa-search" style={{ fontSize: 'clamp(40px, 6vw, 60px)', display: 'block', marginBottom: 12, opacity: 0.3 }}></i>
-        <p style={{ fontSize: 'clamp(16px, 1.5vw, 20px)' }}>Hech qanday mahsulot topilmadi</p>
+      <div style={{ textAlign: 'center', padding: 'clamp(30px, 8vw, 80px) 0', opacity: 0.6 }}>
+        <i className="fas fa-search" style={{ fontSize: 'clamp(30px, 6vw, 60px)', display: 'block', marginBottom: 12, opacity: 0.3 }}></i>
+        <p style={{ fontSize: 'clamp(14px, 1.5vw, 20px)' }}>Hech qanday mahsulot topilmadi</p>
       </div>
     );
   }
@@ -88,23 +88,23 @@ export default function ProductGrid({
         ))}
       </div>
       {hasMore && (
-        <div style={{ textAlign: 'center', padding: '8px 0 40px' }}>
+        <div style={{ textAlign: 'center', padding: '6px 0 30px' }}>
           <button
             onClick={loadMore}
             style={{
-              padding: '10px 32px',
+              padding: '8px 24px',
               borderRadius: 60,
               background: 'var(--accent)',
               color: '#fff',
               fontWeight: 700,
               border: 'none',
               cursor: 'pointer',
-              fontSize: 'clamp(14px, 1.5vw, 16px)',
+              fontSize: 'clamp(12px, 1.5vw, 16px)',
               boxShadow: '0 4px 20px rgba(56,189,248,0.3)',
               transition: '0.3s',
             }}
           >
-            <i className="fas fa-plus-circle" style={{ marginRight: 8 }}></i>
+            <i className="fas fa-plus-circle" style={{ marginRight: 6 }}></i>
             Yana ko'rsatish {Math.min(pageSize, filtered.length - visibleCount)}
           </button>
         </div>

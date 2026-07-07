@@ -226,18 +226,18 @@ export default function Header({
 
       <style>{`
         @media (max-width: 600px) {
-          .container > div:last-child button span {
+          header .container > div:last-child button span {
             display: none !important;
           }
-          .container > div:last-child button {
+          header .container > div:last-child button {
             padding: 0 10px !important;
           }
         }
         @media (max-width: 430px) {
-          .container {
+          header .container {
             gap: 6px !important;
           }
-          .container > div:nth-child(2) {
+          header .container > div:nth-child(2) {
             min-width: 60px !important;
             max-width: 120px !important;
           }
