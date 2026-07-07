@@ -36,11 +36,10 @@ export default function Header({
           flexWrap: 'nowrap',
         }}
       >
-        {/* Logo */}
         <a
           href="#"
           style={{
-            fontSize: 'clamp(20px, 4vw, 26px)',
+            fontSize: 'clamp(20px, 4vw, 28px)',
             fontWeight: 800,
             color: 'var(--accent)',
             display: 'flex',
@@ -55,7 +54,6 @@ export default function Header({
           <span style={{ fontWeight: 300, color: 'var(--text)' }}>market</span>
         </a>
 
-        {/* Qidiruv maydoni */}
         <div
           style={{
             flex: '1 1 auto',
@@ -96,7 +94,6 @@ export default function Header({
           />
         </div>
 
-        {/* Tugmalar guruhi */}
         <div
           style={{
             display: 'flex',
@@ -227,7 +224,6 @@ export default function Header({
         </div>
       </div>
 
-      {/* Kichik ekranlarda so‘zlarni yashirish */}
       <style>{`
         @media (max-width: 600px) {
           .container > div:last-child button span {

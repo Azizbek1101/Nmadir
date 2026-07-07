@@ -44,9 +44,9 @@ body {
 
 /* ===== CONTAINER ===== */
 .container {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 /* ===== SCROLLBAR ===== */
@@ -57,8 +57,9 @@ body {
 /* ===== SHIMMER ===== */
 .shimmer-wrap {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
+  padding: 16px 0;
 }
 .shimmer-card {
   background: var(--card-bg);
@@ -158,10 +159,34 @@ body {
 
 /* Planshet va kichik desktop (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
   .shimmer-wrap {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
   }
 }
 
-/* Katta desktop (1025px+) – default */
+/* Katta desktop (1025px - 1920px) */
+@media (min-width: 1025px) and (max-width: 1920px) {
+  .container {
+    padding: 0 32px;
+  }
+  .shimmer-wrap {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+  }
+}
+
+/* 4K va katta ekranlar (1921px+) */
+@media (min-width: 1921px) {
+  .container {
+    max-width: 1800px;
+    padding: 0 48px;
+  }
+  .shimmer-wrap {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+  }
+}

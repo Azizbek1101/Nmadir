@@ -40,56 +40,34 @@ export default function ProductGrid({
   }, [category, search, favourites]);
 
   if (loading) {
-    return (
-      <div className="shimmer-wrap">
-        {Array(8)
-          .fill(0)
-          .map((_, i) => (
-            <div key={i} className="shimmer-card">
-              <div className="shimmer-img"></div>
-              <div className="shimmer-line"></div>
-              <div className="shimmer-line short"></div>
-              <div className="shimmer-line btn-line"></div>
-            </div>
-          ))}
-      </div>
-    );
+    return <div className="shimmer-wrap">
+      {Array(8).fill(0).map((_, i) => (
+        <div key={i} className="shimmer-card">
+          <div className="shimmer-img"></div>
+          <div className="shimmer-line"></div>
+          <div className="shimmer-line short"></div>
+          <div className="shimmer-line btn-line"></div>
+        </div>
+      ))}
+    </div>;
   }
 
   if (filtered.length === 0) {
     return (
-      <div
-        style={{
-          textAlign: 'center',
-          padding: 'clamp(30px, 6vw, 60px) 0',
-          opacity: 0.6,
-        }}
-      >
-        <i
-          className="fas fa-search"
-          style={{
-            fontSize: 'clamp(32px, 6vw, 48px)',
-            display: 'block',
-            marginBottom: 12,
-            opacity: 0.3,
-          }}
-        ></i>
-        <p style={{ fontSize: 'clamp(14px, 1.5vw, 18px)' }}>
-          Hech qanday mahsulot topilmadi
-        </p>
+      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 80px) 0', opacity: 0.6 }}>
+        <i className="fas fa-search" style={{ fontSize: 'clamp(40px, 6vw, 60px)', display: 'block', marginBottom: 12, opacity: 0.3 }}></i>
+        <p style={{ fontSize: 'clamp(16px, 1.5vw, 20px)' }}>Hech qanday mahsulot topilmadi</p>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(150px, 25vw, 260px), 1fr))',
-        gap: 'clamp(12px, 2vw, 24px)',
-        padding: '16px 0 60px',
-      }}
-    >
+    <div className="product-grid" style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(160px, 25vw, 280px), 1fr))',
+      gap: 'clamp(16px, 2vw, 28px)',
+      padding: '20px 0 60px',
+    }}>
       {filtered.map((p) => (
         <ProductCard
           key={p.id}

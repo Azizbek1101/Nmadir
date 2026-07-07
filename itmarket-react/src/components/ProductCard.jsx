@@ -34,6 +34,7 @@ export default function ProductCard({
         flexDirection: 'column',
         cursor: 'pointer',
         height: '100%',
+        width: '100%',
       }}
     >
       <div
@@ -57,18 +58,8 @@ export default function ProductCard({
           />
         ) : (
           <div style={{ textAlign: 'center', opacity: 0.5, userSelect: 'none' }}>
-            <i
-              className="fas fa-image"
-              style={{ fontSize: 'clamp(28px, 5vw, 44px)', display: 'block', marginBottom: 8 }}
-            ></i>
-            <span
-              style={{
-                background: 'var(--border)',
-                padding: '2px 12px',
-                borderRadius: 60,
-                fontSize: 'clamp(10px, 1.2vw, 12px)',
-              }}
-            >
+            <i className="fas fa-image" style={{ fontSize: 'clamp(32px, 5vw, 48px)', display: 'block', marginBottom: 8 }}></i>
+            <span style={{ background: 'var(--border)', padding: '2px 12px', borderRadius: 60, fontSize: 'clamp(10px, 1.2vw, 12px)' }}>
               Rasm qo‘shing
             </span>
           </div>
@@ -106,6 +97,7 @@ export default function ProductCard({
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
+            wordBreak: 'break-word',
           }}
         >
           {product.emoji} {product.name}
@@ -135,15 +127,14 @@ export default function ProductCard({
               border: 'none',
               background: inCart ? '#10b981' : 'var(--accent)',
               color: '#fff',
-              boxShadow: inCart
-                ? '0 4px 16px rgba(16,185,129,0.3)'
-                : '0 4px 16px rgba(56,189,248,0.3)',
+              boxShadow: inCart ? '0 4px 16px rgba(16,185,129,0.3)' : '0 4px 16px rgba(56,189,248,0.3)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 6,
+              gap: 4,
               transition: '0.3s',
+              whiteSpace: 'nowrap',
             }}
           >
             <i className={`fas ${inCart ? 'fa-check' : 'fa-plus'}`}></i>
