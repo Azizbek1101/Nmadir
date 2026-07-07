@@ -1,4 +1,3 @@
-// src/components/ProductGrid.jsx
 import { useState, useEffect } from 'react';
 import { products } from '../data/products';
 import ProductCard from './ProductCard';
@@ -14,6 +13,8 @@ export default function ProductGrid({
 }) {
   const [loading, setLoading] = useState(true);
   const [filtered, setFiltered] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(10); // har safar 10 ta qo'shiladi
+  const pageSize = 10;
 
   useEffect(() => {
     setLoading(true);
@@ -34,22 +35,32 @@ export default function ProductGrid({
         );
       }
       setFiltered(result);
+      setVisibleCount(pageSize); // filter o'zgarganda yana 10 ta qilib qo'yamiz
       setLoading(false);
     }, 600);
     return () => clearTimeout(timer);
   }, [category, search, favourites]);
 
+  const loadMore = () => {
+    setVisibleCount((prev) => prev + pageSize);
+  };
+
+  const displayedProducts = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
   if (loading) {
-    return <div className="shimmer-wrap">
-      {Array(8).fill(0).map((_, i) => (
-        <div key={i} className="shimmer-card">
-          <div className="shimmer-img"></div>
-          <div className="shimmer-line"></div>
-          <div className="shimmer-line short"></div>
-          <div className="shimmer-line btn-line"></div>
-        </div>
-      ))}
-    </div>;
+    return (
+      <div className="shimmer-wrap">
+        {Array(8).fill(0).map((_, i) => (
+          <div key={i} className="shimmer-card">
+            <div className="shimmer-img"></div>
+            <div className="shimmer-line"></div>
+            <div className="shimmer-line short"></div>
+            <div className="shimmer-line btn-line"></div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (filtered.length === 0) {
@@ -62,23 +73,42 @@ export default function ProductGrid({
   }
 
   return (
-    <div className="product-grid" style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(160px, 25vw, 280px), 1fr))',
-      gap: 'clamp(16px, 2vw, 28px)',
-      padding: '20px 0 60px',
-    }}>
-      {filtered.map((p) => (
-        <ProductCard
-          key={p.id}
-          product={p}
-          inCart={cart.some((item) => item.id === p.id)}
-          inFavourite={favourites.includes(p.id)}
-          onToggleCart={onToggleCart}
-          onToggleFavourite={onToggleFavourite}
-          onOpenDetail={onOpenDetail}
-        />
-      ))}
+    <div>
+      <div className="product-grid">
+        {displayedProducts.map((p) => (
+          <ProductCard
+            key={p.id}
+            product={p}
+            inCart={cart.some((item) => item.id === p.id)}
+            inFavourite={favourites.includes(p.id)}
+            onToggleCart={onToggleCart}
+            onToggleFavourite={onToggleFavourite}
+            onOpenDetail={onOpenDetail}
+          />
+        ))}
+      </div>
+      {hasMore && (
+        <div style={{ textAlign: 'center', padding: '8px 0 40px' }}>
+          <button
+            onClick={loadMore}
+            style={{
+              padding: '10px 32px',
+              borderRadius: 60,
+              background: 'var(--accent)',
+              color: '#fff',
+              fontWeight: 700,
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 'clamp(14px, 1.5vw, 16px)',
+              boxShadow: '0 4px 20px rgba(56,189,248,0.3)',
+              transition: '0.3s',
+            }}
+          >
+            <i className="fas fa-plus-circle" style={{ marginRight: 8 }}></i>
+            Yana ko'rsatish {Math.min(pageSize, filtered.length - visibleCount)}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
