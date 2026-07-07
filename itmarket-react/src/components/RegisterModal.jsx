@@ -1,3 +1,4 @@
+// src/components/RegisterModal.jsx
 import { useState } from 'react';
 
 export default function RegisterModal({
@@ -10,7 +11,6 @@ export default function RegisterModal({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleRegister = (e) => {
@@ -18,11 +18,26 @@ export default function RegisterModal({
     if (name && email && password) {
       onShowLoader(1200);
       const userData = { name, email };
+      localStorage.setItem('itmarket_user', JSON.stringify(userData));
+      if (!localStorage.getItem('itmarket_bonus')) {
+        localStorage.setItem('itmarket_bonus', '1500');
+      }
+      if (!localStorage.getItem('itmarket_promos')) {
+        localStorage.setItem('itmarket_promos', JSON.stringify(['WELCOME10', 'SUMMER20']));
+      }
+      if (!localStorage.getItem('itmarket_orders')) {
+        localStorage.setItem(
+          'itmarket_orders',
+          JSON.stringify([
+            { id: 1, date: '2026-06-20', total: 18990000, status: 'Yetkazilgan' },
+          ])
+        );
+      }
       setSuccess(true);
-      onToast("Ro'yxatdan o'tish muvaffaqiyatli!", "success");
-      onRegisterSuccess(userData); // App ga yuboramiz
+      onToast("Ro'yxatdan o'tish muvaffaqiyatli!", 'success');
+      onRegisterSuccess();
     } else {
-      onToast("Iltimos, barcha maydonlarni to'ldiring", "error");
+      onToast("Iltimos, barcha maydonlarni to'ldiring", 'error');
     }
   };
 
@@ -31,7 +46,6 @@ export default function RegisterModal({
     setName('');
     setEmail('');
     setPassword('');
-    setPasswordVisible(false);
     onClose();
   };
 
@@ -51,7 +65,7 @@ export default function RegisterModal({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
+        padding: 'clamp(12px, 3vw, 20px)',
         animation: 'fadeIn 0.3s ease',
       }}
     >
@@ -61,23 +75,41 @@ export default function RegisterModal({
           borderRadius: 'var(--radius)',
           width: '100%',
           maxWidth: 480,
-          padding: '32px 28px',
+          padding: 'clamp(24px, 4vw, 32px)',
           border: '1px solid var(--border)',
           boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
           animation: 'slideUp 0.35s cubic-bezier(0.22,1,0.36,1)',
+          maxHeight: '95vh',
+          overflowY: 'auto',
         }}
       >
         {!success ? (
           <>
-            <h2 style={{ fontSize: 24, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10 }}>
-              <i className="fas fa-user-plus" style={{ color: 'var(--accent)' }}></i> Ro'yxatdan o'tish
+            <h2
+              style={{
+                fontSize: 'clamp(20px, 3vw, 24px)',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <i className="fas fa-user-plus" style={{ color: 'var(--accent)' }}></i> Ro‘yxatdan o‘tish
             </h2>
-            <p style={{ opacity: 0.6, fontSize: 14, marginBottom: 24 }}>
-              ITmarket do'koniga xush kelibsiz!
+            <p style={{ opacity: 0.6, fontSize: 'clamp(13px, 1.4vw, 14px)', marginBottom: 20 }}>
+              ITmarket do‘koniga xush kelibsiz!
             </p>
             <form onSubmit={handleRegister}>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 5, opacity: 0.8 }}>
+              <div style={{ marginBottom: 14 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 'clamp(12px, 1.2vw, 13px)',
+                    fontWeight: 600,
+                    marginBottom: 4,
+                    opacity: 0.8,
+                  }}
+                >
                   Ism va familiya
                 </label>
                 <input
@@ -87,18 +119,26 @@ export default function RegisterModal({
                   placeholder="Masalan: Alisher Karimov"
                   style={{
                     width: '100%',
-                    padding: '12px 16px',
+                    padding: '10px 14px',
                     borderRadius: 12,
                     background: 'var(--input-bg)',
                     border: '2px solid var(--border)',
-                    fontSize: 15,
+                    fontSize: 'clamp(14px, 1.4vw, 15px)',
                     color: 'var(--text)',
                   }}
                   required
                 />
               </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 5, opacity: 0.8 }}>
+              <div style={{ marginBottom: 14 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 'clamp(12px, 1.2vw, 13px)',
+                    fontWeight: 600,
+                    marginBottom: 4,
+                    opacity: 0.8,
+                  }}
+                >
                   Elektron pochta
                 </label>
                 <input
@@ -108,67 +148,54 @@ export default function RegisterModal({
                   placeholder="alisher@example.com"
                   style={{
                     width: '100%',
-                    padding: '12px 16px',
+                    padding: '10px 14px',
                     borderRadius: 12,
                     background: 'var(--input-bg)',
                     border: '2px solid var(--border)',
-                    fontSize: 15,
+                    fontSize: 'clamp(14px, 1.4vw, 15px)',
                     color: 'var(--text)',
                   }}
                   required
                 />
               </div>
-              <div style={{ marginBottom: 24 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 5, opacity: 0.8 }}>
+              <div style={{ marginBottom: 20 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 'clamp(12px, 1.2vw, 13px)',
+                    fontWeight: 600,
+                    marginBottom: 4,
+                    opacity: 0.8,
+                  }}
+                >
                   Parol
                 </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type={passwordVisible ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="●●●●●●●●"
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      paddingRight: '44px',
-                      borderRadius: 12,
-                      background: 'var(--input-bg)',
-                      border: '2px solid var(--border)',
-                      fontSize: 15,
-                      color: 'var(--text)',
-                    }}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                    style={{
-                      position: 'absolute',
-                      right: 12,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: 'var(--text)',
-                      opacity: 0.6,
-                      fontSize: 18,
-                    }}
-                  >
-                    <i className={passwordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
-                  </button>
-                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="●●●●●●●●"
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    borderRadius: 12,
+                    background: 'var(--input-bg)',
+                    border: '2px solid var(--border)',
+                    fontSize: 'clamp(14px, 1.4vw, 15px)',
+                    color: 'var(--text)',
+                  }}
+                  required
+                />
               </div>
               <button
                 type="submit"
                 style={{
                   width: '100%',
-                  padding: 14,
+                  padding: 'clamp(12px, 1.5vw, 14px)',
                   borderRadius: 60,
                   background: 'var(--accent)',
                   color: '#fff',
-                  fontSize: 17,
+                  fontSize: 'clamp(15px, 1.6vw, 17px)',
                   fontWeight: 700,
                   border: 'none',
                   cursor: 'pointer',
@@ -176,22 +203,22 @@ export default function RegisterModal({
                   transition: '0.3s',
                 }}
               >
-                <i className="fas fa-check"></i> Ro'yxatdan o'tish
+                <i className="fas fa-check"></i> Ro‘yxatdan o‘tish
               </button>
             </form>
             <button
               onClick={handleClose}
               style={{
                 width: '100%',
-                padding: 12,
+                padding: '10px',
                 borderRadius: 60,
                 background: 'var(--input-bg)',
                 color: 'var(--text)',
-                fontSize: 15,
+                fontSize: 'clamp(14px, 1.4vw, 15px)',
                 fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
-                marginTop: 12,
+                marginTop: 10,
                 transition: '0.3s',
               }}
             >
@@ -199,23 +226,26 @@ export default function RegisterModal({
             </button>
           </>
         ) : (
-          <div style={{ textAlign: 'center', padding: '20px 0' }}>
-            <i className="fas fa-check-circle" style={{ fontSize: 56, color: '#10b981', marginBottom: 12 }}></i>
-            <p>
+          <div style={{ textAlign: 'center', padding: 'clamp(16px, 3vw, 24px) 0' }}>
+            <i
+              className="fas fa-check-circle"
+              style={{ fontSize: 'clamp(44px, 6vw, 56px)', color: '#10b981', marginBottom: 12 }}
+            ></i>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)' }}>
               <strong>Tabriklaymiz!</strong>
               <br />
-              Siz muvaffaqiyatli ro'yxatdan o'tdingiz.
+              Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz.
             </p>
             <button
               onClick={handleClose}
               style={{
                 marginTop: 20,
                 width: '100%',
-                padding: 12,
+                padding: '10px',
                 borderRadius: 60,
                 background: 'var(--input-bg)',
                 color: 'var(--text)',
-                fontSize: 15,
+                fontSize: 'clamp(14px, 1.4vw, 15px)',
                 fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',

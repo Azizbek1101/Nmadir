@@ -29,9 +29,10 @@ function App() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
-  // Ro'yxatdan o'tish holati (faqat state)
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isRegistered, setIsRegistered] = useState(() => {
+    const saved = localStorage.getItem('itmarket_registered');
+    return saved === 'true';
+  });
 
   const showToast = (msg, type = 'info') => {
     setToast({ message: msg, type });
@@ -46,13 +47,13 @@ function App() {
   const cartCount = cart.reduce((sum, i) => sum + i.qty, 0);
 
   const toggleFavourite = (id) => {
-    setFavourites(prev => {
-      const newFav = prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id];
+    setFavourites((prev) => {
+      const newFav = prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id];
       localStorage.setItem('itmarket_favourites', JSON.stringify(newFav));
       return newFav;
     });
     const inFav = favourites.includes(id);
-    showToast(inFav ? "Sevimlilardan olib tashlandi" : "Sevimlilarga qo'shildi", "info");
+    showToast(inFav ? 'Sevimlilardan olib tashlandi' : "Sevimlilarga qo'shildi", 'info');
   };
 
   const openDetail = (id) => {
@@ -66,29 +67,28 @@ function App() {
   };
 
   const addToCartFromDetail = (id) => {
-    const existing = cart.find(item => item.id === id);
+    const existing = cart.find((item) => item.id === id);
     if (existing) {
-      setCart(prev => {
-        const newCart = prev.map(item =>
+      setCart((prev) => {
+        const newCart = prev.map((item) =>
           item.id === id ? { ...item, qty: item.qty + 1 } : item
         );
         localStorage.setItem('itmarket_cart', JSON.stringify(newCart));
         return newCart;
       });
     } else {
-      setCart(prev => {
+      setCart((prev) => {
         const newCart = [...prev, { id, qty: 1 }];
         localStorage.setItem('itmarket_cart', JSON.stringify(newCart));
         return newCart;
       });
     }
-    showToast("Savatga qo'shildi", "success");
+    showToast("Savatga qo'shildi", 'success');
   };
 
-  const handleRegisterSuccess = (userData) => {
+  const handleRegisterSuccess = () => {
     setIsRegistered(true);
-    setUser(userData);
-    showToast("Ro'yxatdan o'tish muvaffaqiyatli!", "success");
+    localStorage.setItem('itmarket_registered', 'true');
   };
 
   const handleProfileClick = () => {
@@ -97,8 +97,8 @@ function App() {
 
   const handleLogout = () => {
     setIsRegistered(false);
-    setUser(null);
-    showToast("Chiqdingiz", "info");
+    localStorage.removeItem('itmarket_registered');
+    showToast('Chiqdingiz', 'info');
     setProfileOpen(false);
   };
 
@@ -125,21 +125,21 @@ function App() {
           cart={cart}
           favourites={favourites}
           onToggleCart={(id) => {
-            const existing = cart.find(item => item.id === id);
+            const existing = cart.find((item) => item.id === id);
             if (existing) {
-              setCart(prev => {
-                const newCart = prev.filter(item => item.id !== id);
+              setCart((prev) => {
+                const newCart = prev.filter((item) => item.id !== id);
                 localStorage.setItem('itmarket_cart', JSON.stringify(newCart));
                 return newCart;
               });
               showToast('Mahsulot olib tashlandi', 'info');
             } else {
-              setCart(prev => {
+              setCart((prev) => {
                 const newCart = [...prev, { id, qty: 1 }];
                 localStorage.setItem('itmarket_cart', JSON.stringify(newCart));
                 return newCart;
               });
-              showToast('Savatga qo\'shildi', 'success');
+              showToast("Savatga qo'shildi", 'success');
             }
           }}
           onToggleFavourite={toggleFavourite}
@@ -168,8 +168,6 @@ function App() {
         isOpen={profileOpen}
         onClose={() => setProfileOpen(false)}
         onLogout={handleLogout}
-        user={user}
-        cart={cart}
       />
 
       <ProductDetail
