@@ -53,12 +53,7 @@ export default function ProductGrid({ category, search, cart, favourites, onTogg
   }
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-      gap: 24,
-      padding: '16px 0 60px'
-    }}>
+    <div className="product-grid">
       {filtered.map(p => (
         <ProductCard
           key={p.id}
