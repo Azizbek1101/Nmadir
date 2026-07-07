@@ -10,27 +10,24 @@ export default function CategoryBar({ current, setCategory, onShowLoader }) {
   };
 
   return (
-    <nav
-      style={{
-        padding: '16px 0 8px',
-        overflowX: 'auto',
-        display: 'flex',
-        gap: 'clamp(6px, 1.5vw, 10px)',
-        flexWrap: 'nowrap',
-        scrollbarWidth: 'none',
-        WebkitOverflowScrolling: 'touch',
-        msOverflowStyle: 'none',
-      }}
-      className="category-bar"
-    >
+    <nav className="category-bar" style={{
+      padding: '16px 0 8px',
+      overflowX: 'auto',
+      display: 'flex',
+      gap: 'clamp(6px, 1.5vw, 12px)',
+      flexWrap: 'nowrap',
+      scrollbarWidth: 'none',
+      WebkitOverflowScrolling: 'touch',
+      msOverflowStyle: 'none',
+    }}>
       {categories.map((cat) => (
         <button
           key={cat}
           onClick={() => handleClick(cat)}
           style={{
-            padding: '6px clamp(14px, 3vw, 22px)',
+            padding: '8px clamp(14px, 3vw, 24px)',
             borderRadius: 60,
-            fontSize: 'clamp(12px, 1.4vw, 14px)',
+            fontSize: 'clamp(13px, 1.4vw, 15px)',
             fontWeight: 600,
             background: current === cat ? 'var(--accent)' : 'var(--card-bg)',
             color: current === cat ? '#fff' : 'var(--text)',
