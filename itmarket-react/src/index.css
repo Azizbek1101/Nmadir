@@ -41,33 +41,14 @@ body {
   line-height: 1.5;
 }
 
+/* ===== CONTAINER ===== */
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
-/* ===== HERO ===== */
-.hero-section {
-  padding: 10px 0 4px;
-  text-align: left;
-}
-.hero-title {
-  font-size: clamp(20px, 3vw, 30px);
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: -0.5px;
-  margin-bottom: 2px;
-  line-height: 1.2;
-}
-.hero-subtitle {
-  font-size: clamp(14px, 1.2vw, 16px);
-  color: var(--text);
-  opacity: 0.7;
-  font-weight: 400;
-}
-
-/* ===== HEADER ===== */
+/* ===== HEADER GLASS ===== */
 header {
   background: rgba(255, 255, 255, 0.75) !important;
   backdrop-filter: blur(20px) !important;
@@ -215,21 +196,35 @@ header {
 .toast i { color: var(--accent); font-size: 16px; }
 .toast.success i { color: #10b981; }
 
+/* ===== BANNER – 16:9 ===== */
+.banner-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9 !important;
+  max-height: 700px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  background: var(--bg);
+}
+
+.banner-slider .banner-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
 /* ===== RESPONSIVE ===== */
 
 /* Telefon (max 480px) */
 @media (max-width: 480px) {
   .container {
     padding: 0 10px;
-  }
-  .hero-section {
-    padding: 8px 0 4px;
-  }
-  .hero-title {
-    font-size: 18px;
-  }
-  .hero-subtitle {
-    font-size: 13px;
   }
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -259,7 +254,17 @@ header {
     padding: 5px 14px;
     font-size: 12px;
   }
-  /* kartochka ichidagi elementlar o‘rtacha */
+  .banner-slider {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 300px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .banner-slider button {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+  }
   .product-grid > div .product-category {
     font-size: 10px !important;
     padding: 2px 10px !important;
@@ -299,6 +304,10 @@ header {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
   }
+  .banner-slider {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 400px;
+  }
 }
 
 /* Planshet (769-1024px) */
@@ -313,6 +322,10 @@ header {
   .shimmer-wrap {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+  }
+  .banner-slider {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 500px;
   }
 }
 
@@ -329,6 +342,10 @@ header {
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
   }
+  .banner-slider {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 600px;
+  }
 }
 
 /* Katta desktop (1441-1920px) */
@@ -343,6 +360,10 @@ header {
   .shimmer-wrap {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+  }
+  .banner-slider {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 700px;
   }
 }
 
@@ -360,5 +381,9 @@ header {
     grid-template-columns: repeat(5, 1fr);
     gap: 24px;
   }
+  .banner-slider {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 900px;
+    border-radius: 24px;
+  }
 }
-

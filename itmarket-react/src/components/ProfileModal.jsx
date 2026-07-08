@@ -1,30 +1,30 @@
 // src/components/ProfileModal.jsx
 import { useState, useEffect } from 'react';
 
-export default function ProfileModal({ isOpen, onClose, onLogout }) {
+export default function ProfileModal({ isOpen, onClose, onLogout, language, setLanguage }) {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [bonus, setBonus] = useState(0);
   const [promoCodes, setPromoCodes] = useState([]);
 
+  const languages = [
+    { code: 'uz', label: "O'zbek", flag: '🇺🇿' },
+    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+    { code: 'en', label: 'English', flag: '🇬🇧' },
+  ];
+
   useEffect(() => {
     if (isOpen) {
       const savedUser = localStorage.getItem('itmarket_user');
       if (savedUser) setUser(JSON.parse(savedUser));
-
       const savedOrders = localStorage.getItem('itmarket_orders');
-      if (savedOrders) {
-        setOrders(JSON.parse(savedOrders));
-      } else {
-        setOrders([
-          { id: 1, date: '2026-06-20', total: 18990000, status: 'Yetkazilgan' },
-          { id: 2, date: '2026-06-25', total: 8490000, status: 'Tayyorlanmoqda' },
-        ]);
-      }
-
+      if (savedOrders) setOrders(JSON.parse(savedOrders));
+      else setOrders([
+        { id: 1, date: '2026-07-01', total: 18990000, status: 'Yetkazilgan' },
+        { id: 2, date: '2026-07-05', total: 8490000, status: 'Tayyorlanmoqda' },
+      ]);
       const savedBonus = localStorage.getItem('itmarket_bonus');
       setBonus(savedBonus ? Number(savedBonus) : 1250);
-
       const savedPromos = localStorage.getItem('itmarket_promos');
       setPromoCodes(savedPromos ? JSON.parse(savedPromos) : ['WELCOME10', 'SUMMER20', 'BONUS50']);
     }
@@ -77,17 +77,9 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
             marginBottom: 20,
           }}
         >
-          <h2
-            style={{
-              fontSize: 'clamp(20px, 3vw, 24px)',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
+          <h2 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
             <i className="fas fa-user-circle" style={{ color: 'var(--accent)' }}></i>
-            Mening profilim
+            {language === 'uz' ? "Mening profilim" : language === 'ru' ? "Мой профиль" : "My profile"}
           </h2>
           <button
             onClick={onClose}
@@ -107,6 +99,44 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
           >
             <i className="fas fa-times"></i>
           </button>
+        </div>
+
+        {/* Til almashtirish */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '8px',
+            marginBottom: '20px',
+            padding: '8px 12px',
+            background: 'var(--input-bg)',
+            borderRadius: '12px',
+            border: '1px solid var(--border)',
+            flexWrap: 'wrap',
+          }}
+        >
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => setLanguage(lang.code)}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '30px',
+                border: '2px solid',
+                borderColor: language === lang.code ? 'var(--accent)' : 'transparent',
+                background: language === lang.code ? 'rgba(56,189,248,0.15)' : 'transparent',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: language === lang.code ? 700 : 500,
+                color: 'var(--text)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: '0.3s',
+              }}
+            >
+              <span>{lang.flag}</span> {lang.label}
+            </button>
+          ))}
         </div>
 
         {user ? (
@@ -139,13 +169,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                   {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontSize: 'clamp(18px, 2.2vw, 20px)',
-                      fontWeight: 700,
-                      wordBreak: 'break-word',
-                    }}
-                  >
+                  <div style={{ fontSize: 'clamp(18px, 2.2vw, 20px)', fontWeight: 700, wordBreak: 'break-word' }}>
                     {user.name || 'Foydalanuvchi'}
                   </div>
                   <div style={{ opacity: 0.6, fontSize: 'clamp(13px, 1.3vw, 14px)', wordBreak: 'break-word' }}>
@@ -172,17 +196,11 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                   textAlign: 'center',
                 }}
               >
-                <div
-                  style={{
-                    fontSize: 'clamp(22px, 3vw, 28px)',
-                    fontWeight: 800,
-                    color: 'var(--accent)',
-                  }}
-                >
+                <div style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 800, color: 'var(--accent)' }}>
                   {bonus}
                 </div>
                 <div style={{ fontSize: 'clamp(12px, 1.2vw, 13px)', opacity: 0.6 }}>
-                  🎁 Bonus ballari
+                  🎁 {language === 'uz' ? 'Bonus ballari' : language === 'ru' ? 'Бонусные баллы' : 'Bonus points'}
                 </div>
               </div>
               <div
@@ -194,34 +212,20 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                   textAlign: 'center',
                 }}
               >
-                <div
-                  style={{
-                    fontSize: 'clamp(22px, 3vw, 28px)',
-                    fontWeight: 800,
-                    color: '#f59e0b',
-                  }}
-                >
+                <div style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 800, color: '#f59e0b' }}>
                   {promoCodes.length}
                 </div>
                 <div style={{ fontSize: 'clamp(12px, 1.2vw, 13px)', opacity: 0.6 }}>
-                  🏷️ Faol promo kodlar
+                  🏷️ {language === 'uz' ? 'Faol promo kodlar' : language === 'ru' ? 'Активные промо-коды' : 'Active promo codes'}
                 </div>
               </div>
             </div>
 
             {promoCodes.length > 0 && (
               <div style={{ marginBottom: 20 }}>
-                <h3
-                  style={{
-                    fontSize: 'clamp(14px, 1.5vw, 16px)',
-                    fontWeight: 600,
-                    marginBottom: 8,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
-                >
-                  <i className="fas fa-tags" style={{ color: 'var(--accent)' }}></i> Mening promo kodlarim
+                <h3 style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', fontWeight: 600, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <i className="fas fa-tags" style={{ color: 'var(--accent)' }}></i>
+                  {language === 'uz' ? 'Mening promo kodlarim' : language === 'ru' ? 'Мои промо-коды' : 'My promo codes'}
                 </h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {promoCodes.map((code, idx) => (
@@ -245,17 +249,9 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
             )}
 
             <div style={{ marginBottom: 20 }}>
-              <h3
-                style={{
-                  fontSize: 'clamp(14px, 1.5vw, 16px)',
-                  fontWeight: 600,
-                  marginBottom: 8,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}
-              >
-                <i className="fas fa-box" style={{ color: 'var(--accent)' }}></i> So‘nggi buyurtmalar
+              <h3 style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', fontWeight: 600, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <i className="fas fa-box" style={{ color: 'var(--accent)' }}></i>
+                {language === 'uz' ? 'So‘nggi buyurtmalar' : language === 'ru' ? 'Последние заказы' : 'Recent orders'}
               </h3>
               {orders.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -275,25 +271,14 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                       }}
                     >
                       <div>
-                        <div
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 'clamp(13px, 1.3vw, 14px)',
-                          }}
-                        >
+                        <div style={{ fontWeight: 600, fontSize: 'clamp(13px, 1.3vw, 14px)' }}>
                           #{order.id} – {new Date(order.date).toLocaleDateString('uz-UZ')}
                         </div>
                         <div style={{ fontSize: 'clamp(12px, 1.2vw, 13px)', opacity: 0.6 }}>
                           {order.status}
                         </div>
                       </div>
-                      <div
-                        style={{
-                          fontWeight: 700,
-                          color: 'var(--accent)',
-                          fontSize: 'clamp(13px, 1.3vw, 14px)',
-                        }}
-                      >
+                      <div style={{ fontWeight: 700, color: 'var(--accent)', fontSize: 'clamp(13px, 1.3vw, 14px)' }}>
                         {new Intl.NumberFormat('uz-UZ').format(order.total)} so‘m
                       </div>
                     </div>
@@ -301,7 +286,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                 </div>
               ) : (
                 <p style={{ opacity: 0.5, fontSize: 'clamp(13px, 1.3vw, 14px)' }}>
-                  Hali buyurtmalar yo‘q
+                  {language === 'uz' ? 'Hali buyurtmalar yo‘q' : language === 'ru' ? 'Нет заказов' : 'No orders yet'}
                 </p>
               )}
             </div>
@@ -325,16 +310,16 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                 transition: '0.3s',
               }}
             >
-              <i className="fas fa-sign-out-alt"></i> Chiqish
+              <i className="fas fa-sign-out-alt"></i>
+              {language === 'uz' ? 'Chiqish' : language === 'ru' ? 'Выйти' : 'Logout'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center', padding: 'clamp(20px, 4vw, 30px) 0' }}>
-            <i
-              className="fas fa-user-slash"
-              style={{ fontSize: 'clamp(40px, 6vw, 48px)', opacity: 0.3, display: 'block', marginBottom: 12 }}
-            ></i>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)' }}>Foydalanuvchi maʼlumotlari topilmadi.</p>
+            <i className="fas fa-user-slash" style={{ fontSize: 'clamp(40px, 6vw, 48px)', opacity: 0.3, display: 'block', marginBottom: 12 }}></i>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)' }}>
+              {language === 'uz' ? 'Foydalanuvchi maʼlumotlari topilmadi.' : language === 'ru' ? 'Данные пользователя не найдены.' : 'User data not found.'}
+            </p>
             <button
               onClick={onClose}
               style={{
@@ -348,7 +333,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout }) {
                 fontSize: 'clamp(14px, 1.4vw, 15px)',
               }}
             >
-              Yopish
+              {language === 'uz' ? 'Yopish' : language === 'ru' ? 'Закрыть' : 'Close'}
             </button>
           </div>
         )}

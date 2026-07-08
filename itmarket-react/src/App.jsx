@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import CategoryBar from './components/CategoryBar';
+import BannerSlider from './components/BannerSlider';
 import ProductGrid from './components/ProductGrid';
 import Cart from './components/Cart';
 import RegisterModal from './components/RegisterModal';
@@ -28,6 +29,7 @@ function App() {
   const [loaderVisible, setLoaderVisible] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [language, setLanguage] = useState('uz');
 
   const [isRegistered, setIsRegistered] = useState(() => {
     const saved = localStorage.getItem('itmarket_registered');
@@ -112,12 +114,16 @@ function App() {
         onRegisterOpen={() => setRegisterOpen(true)}
         isRegistered={isRegistered}
         onProfileClick={handleProfileClick}
+        language={language}
+        setLanguage={setLanguage}
       />
       <div className="container">
+        <BannerSlider onCategorySelect={setCategory} />
         <CategoryBar
           current={category}
           setCategory={setCategory}
           onShowLoader={showLoader}
+          language={language}
         />
         <ProductGrid
           category={category}
@@ -144,6 +150,7 @@ function App() {
           }}
           onToggleFavourite={toggleFavourite}
           onOpenDetail={openDetail}
+          language={language}
         />
       </div>
 
@@ -154,6 +161,7 @@ function App() {
         setCart={setCart}
         onToast={showToast}
         onShowLoader={showLoader}
+        language={language}
       />
 
       <RegisterModal
@@ -162,12 +170,15 @@ function App() {
         onToast={showToast}
         onShowLoader={showLoader}
         onRegisterSuccess={handleRegisterSuccess}
+        language={language}
       />
 
       <ProfileModal
         isOpen={profileOpen}
         onClose={() => setProfileOpen(false)}
         onLogout={handleLogout}
+        language={language}
+        setLanguage={setLanguage}
       />
 
       <ProductDetail
@@ -176,6 +187,7 @@ function App() {
         productId={selectedProductId}
         onAddToCart={addToCartFromDetail}
         onToast={showToast}
+        language={language}
       />
 
       {toast.message && (
